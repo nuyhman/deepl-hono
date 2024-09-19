@@ -7,6 +7,7 @@ This project provides a simple API for translating text using the DeepL API. It 
 - Node.js (>= 18.x)
 - npm or yarn
 - [DeepL API key](https://support.deepl.com/hc/en-us/articles/360020695820-API-Key-for-DeepL-s-API#h_01HM9MFQ195GTHM93RRY63M18W)
+- [Supported Languages](https://developers.deepl.com/docs/resources/supported-languages)
 
 ## Installation
 
