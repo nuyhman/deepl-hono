@@ -1,46 +1,33 @@
-import app from './index';
-import { ITranslateRequest } from './type';
-
-const sendRequest = async <T>(url: string, body: T) => {
-  return app.request(url, {
-    method: 'POST',
-    body: JSON.stringify(body),
-  });
-};
+import { post } from './utils/request';
 
 describe('POST /translate', () => {
-  1;
   let res: Response;
-  const reqBody: ITranslateRequest = {
+  const reqBody = {
     texts: ['Hello World!', 'How are you?'],
-    targetLang: 'de',
+    targetLang: 'DE',
   };
 
-  it('should return status 200', async () => {
-    res = await sendRequest('/translate', reqBody);
-    expect(res.status).toBe(200);
-  });
-
   it('should return translated texts', async () => {
-    res = await sendRequest('/translate', reqBody);
+    res = await post('/translate', reqBody);
+    expect(res.status).toBe(200);
     expect(await res.json()).toEqual(['Hallo Welt!', 'Wie geht es Ihnen?']);
   });
 
-  it('should return status 400', async () => {
-    res = await sendRequest('/translate', {
+  it('should return 400 for empty text array', async () => {
+    res = await post('/translate', {
       texts: [],
-      targetLang: '',
+      targetLang: 'DE',
     });
     expect(res.status).toBe(400);
+    expect(await res.text()).toBe('Invalid provided texts.');
   });
 
-  it('should return no texts provided ', async () => {
-    res = await sendRequest('/translate', {
-      texts: [],
-      targetLang: '',
+  it('should return 400 for invalid target language', async () => {
+    res = await post('/translate', {
+      texts: ['Hello World!'],
+      targetLang: 'VN',
     });
-    expect(await res.text()).toBe(
-      'Invalid input. Provide texts and a target language.'
-    );
+    expect(res.status).toBe(400);
+    expect(await res.text()).toBe('Invalid target language.');
   });
 });
