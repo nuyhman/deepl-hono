@@ -1,8 +1,10 @@
 import type { TargetLanguageCode } from 'deepl-node';
 
-export type ENV = {
-  DEEPL_API_KEY: string;
-};
+export interface ILanguage {
+  language: TargetLanguageCode;
+  name: string;
+  supports_formality: boolean;
+}
 
 export interface ITranslateRequest {
   texts: string[];
